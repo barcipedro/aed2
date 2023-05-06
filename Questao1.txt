@@ -1,0 +1,19 @@
+A relação de recorrência para M(i,v) é dada por:
+
+M(i,v) = min(M(i-1,v), M(i-1,v-vi) + mi) se vi ≤ v M(i,v) = M(i-1,v) se vi > v
+
+Onde:
+
+    M(i,v) é o número mínimo de minutos necessários para ganhar v pontos ao responder as i primeiras perguntas.
+    vi é o valor de pontos da i-ésima questão.
+    mi é o tempo necessário para responder a i-ésima questão.
+    P é o mínimo de pontos que devem ser obtidos na prova.
+
+O caso base é dado por M(i,v) = 0 para todo i e v ≤ 0, e M(0,v) = ∞ para v > 0, pois não é possível obter pontos sem responder questões, e não há como obter pontos suficientes sem responder a nenhuma questão.
+
+A relação de recorrência consiste em dois casos:
+
+    Caso 1: se o valor de pontos da i-ésima questão é menor ou igual a v, então podemos escolher entre responder ou não a i-ésima questão. Se escolhermos responder, então precisamos adicionar o tempo necessário para responder a i-ésima questão ao tempo mínimo necessário para obter v-vi pontos nas i-1 primeiras questões. Se escolhermos não responder, então precisamos apenas do tempo mínimo necessário para obter v pontos nas i-1 primeiras questões.
+    Caso 2: se o valor de pontos da i-ésima questão é maior que v, então não podemos responder a i-ésima questão, pois não seria possível obter pontos suficientes para atingir a meta de P pontos.
+
+O resultado final será M(n,P), que é o número mínimo de minutos necessários para obter P pontos ao responder todas as n questões
