@@ -1,0 +1,4 @@
+Usar o algoritmo backtracking para resolver problemas com geração de permutações:
+Tomar linha Item(6,2);
+Tomar linha Item(4,4);
+Printar a última configuração usando backtracking 
