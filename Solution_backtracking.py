@@ -1,53 +1,52 @@
-def is_valid_placement(grid, item, row, col):
-    item_rows, item_cols = item
-    for r in range(item_rows):
-        for c in range(item_cols):
-            if (
-                row + r >= len(grid) or col + c >= len(grid[0])
-                or grid[row + r][col + c] == 1
-            ):
-                return False
+N = 8  # Tamanho do tabuleiro
+board = [[0] * N for _ in range(N)]  # Tabuleiro
+
+
+def is_valid_move(row, col):
+    # Verifica se há alguma torre na mesma linha ou coluna
+    for i in range(N):
+        if board[row][i] == 1 or board[i][col] == 1:
+            return False
+
+    # Verifica se há alguma torre na diagonal principal
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+    for i, j in zip(range(row, N), range(col, N)):
+        if board[i][j] == 1:
+            return False
+
+    # Verifica se há alguma torre na diagonal secundária
+    for i, j in zip(range(row, -1, -1), range(col, N)):
+        if board[i][j] == 1:
+            return False
+    for i, j in zip(range(row, N), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
+
     return True
 
-def place_items(grid, items, row=0, col=0):
-    if row == len(grid):
-        return grid
 
-    if col == len(grid[0]):
-        return place_items(grid, items, row + 1, 0)
+def solve(col):
+    if col == N:
+        # Imprime a configuração final do tabuleiro
+        for row in board:
+            print(' '.join(map(str, row)))
+        return True
 
-    if not items:
-        return grid
+    for row in range(N):
+        if is_valid_move(row, col):
+            # Coloca uma torre na posição (row, col)
+            board[row][col] = 1
 
-    for item in items:
-        if is_valid_placement(grid, item, row, col):
-            item_rows, item_cols = item
-            for r in range(item_rows):
-                for c in range(item_cols):
-                    grid[row + r][col + c] = 1
+            # Chama recursivamente para a próxima coluna
+            if solve(col + 1):
+                return True
 
-            remaining_items = items[:]
-            remaining_items.remove(item)
+            # Se não encontrou uma solução, remove a torre da posição (row, col)
+            board[row][col] = 0
 
-            result = place_items(grid, remaining_items, row, col + 1)
-            if result is not None:
-                return result
+    return False
 
-            for r in range(item_rows):
-                for c in range(item_cols):
-                    grid[row + r][col + c] = 0
 
-    return None
-
-# Example usage
-grid_size = 8
-grid = [[0] * grid_size for _ in range(grid_size)]
-items = [(6, 2), (4, 4)]
-solution = place_items(grid, items)
-
-if solution is None:
-    print("No valid solution found.")
-else:
-    print("Solution:")
-    for row in solution:
-        print(row)
+solve(0)  # Começa na coluna 0
